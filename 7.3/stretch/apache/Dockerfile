@@ -4,7 +4,14 @@ FROM php:7.3-apache
 RUN set -ex; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
-	\    
+	\
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		libmagickwand-dev \
+		&& pecl install imagick \
+		&& docker-php-ext-enable imagick \
+	; \
+	\
 	docker-php-ext-install bcmath exif; \
 	\
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
